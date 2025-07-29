@@ -1,0 +1,12 @@
+# Build files
+kernel/build
+
+# Clangd files
+compile_flags.txt
+
+# Dependencies
+limine
+
+# Disk images
+*.hdd
+*.img
