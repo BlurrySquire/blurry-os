@@ -1,5 +1,7 @@
 #include "serial.h"
 
+#include "io.h"
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -17,38 +19,18 @@
 
 bool init = false;
 
-void port_write(uint16_t port, uint8_t byte) {
-    asm volatile (
-        "out %0, %1"
-        :
-        : "a"(byte), "Nd"(port)
-    );
-}
-
-uint8_t port_read(uint16_t port) {
-    uint8_t byte;
-
-    asm volatile (
-        "in %1, %0"
-        : "=a"(byte)
-        : "Nd"(port)
-    );
-
-    return byte;
-}
-
 int serial_init() {
-    port_write(PORT_COM1 + 1, 0x00);    // Disable all interrupts
-    port_write(PORT_COM1 + 3, 0x80);    // Enable DLAB (baud rate divisor)
-    port_write(PORT_COM1 + 0, 0x00);    // Set divisor to 3 (lo byte) 38400 baud
-    port_write(PORT_COM1 + 1, 0x00);    //                  (hi byte)
-    port_write(PORT_COM1 + 3, 0x03);    // 8 bits, no parity, one stop bit
-    port_write(PORT_COM1 + 2, 0xC7);    // Enable FIFO, clear them, with 14-bye threshold
-    port_write(PORT_COM1 + 4, 0x0B);    // IRQs enabled, RTS/DSR set
-    port_write(PORT_COM1 + 4, 0x1E);    // Set in loopback mode, test the serial chip
-    port_write(PORT_COM1 + 0, 0xAE);    // Test serial chip by sending byte 0xAE
+    io_write8(PORT_COM1 + 1, 0x00);    // Disable all interrupts
+    io_write8(PORT_COM1 + 3, 0x80);    // Enable DLAB (baud rate divisor)
+    io_write8(PORT_COM1 + 0, 0x00);    // Set divisor to 3 (lo byte) 38400 baud
+    io_write8(PORT_COM1 + 1, 0x00);    //                  (hi byte)
+    io_write8(PORT_COM1 + 3, 0x03);    // 8 bits, no parity, one stop bit
+    io_write8(PORT_COM1 + 2, 0xC7);    // Enable FIFO, clear them, with 14-bye threshold
+    io_write8(PORT_COM1 + 4, 0x0B);    // IRQs enabled, RTS/DSR set
+    io_write8(PORT_COM1 + 4, 0x1E);    // Set in loopback mode, test the serial chip
+    io_write8(PORT_COM1 + 0, 0xAE);    // Test serial chip by sending byte 0xAE
 
-    if (port_read(PORT_COM1 + 0) != 0xAE) {
+    if (io_read8(PORT_COM1 + 0) != 0xAE) {
         // The port is faulty
         init = false;
         return 1;
@@ -58,7 +40,7 @@ int serial_init() {
         The port is not faulty so we can set it to normal operation mode
         (not-loopback with IRQs enabled and OUT#1, OUT#2 bits enabled)
     */
-    port_write(PORT_COM1 + 4, 0x0F);
+    io_write8(PORT_COM1 + 4, 0x0F);
 
     init = true;
     return 0;
@@ -67,9 +49,9 @@ int serial_init() {
 void serial_send_char(const char character) {
     if (!init) return;
 
-    while ((port_read(PORT_COM1 + 5) & 0x20) == 0);
+    while ((io_read8(PORT_COM1 + 5) & 0x20) == 0);
 
-    port_write(PORT_COM1, (uint8_t)character);
+    io_write8(PORT_COM1, (uint8_t)character);
 }
 
 void serial_send_string(const char* string) {
@@ -87,7 +69,7 @@ void serial_send_string(const char* string) {
 char serial_receive_char() {
     if (!init) return 0;
 
-    while ((port_read(PORT_COM1 + 5) & 1) == 0);
+    while ((io_read8(PORT_COM1 + 5) & 1) == 0);
 
-    return port_read(PORT_COM1);
+    return io_read8(PORT_COM1);
 }
