@@ -7,14 +7,9 @@
 #include "limine_requests.h"
 #include "console.h"
 #include "serial.h"
+#include "panic.h"
 
 #include "gdt.h"
-
-static void halt() {
-    while (true) {
-        asm volatile ("hlt");
-    }
-}
 
 void kernel_main(void) {
     /*
@@ -30,8 +25,7 @@ void kernel_main(void) {
             revision. It is probably best to just hang
             or shutdown.
         */
-        serial_send_string("Limine: Requested base revision unsupported.\n");
-        halt();
+        kernel_panic("Limine requested base revision unsuported.");
     }
 
     gdt_setup();
@@ -42,8 +36,7 @@ void kernel_main(void) {
             bootloader was unable to get a framebuffer
             from the GPU.
         */
-        serial_send_string("Limine: Unable to get a framebuffer.\n");
-        halt();
+        kernel_panic("Unable to get a framebuffer from Limine.");
     }
 
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
@@ -56,5 +49,5 @@ void kernel_main(void) {
 
     serial_send_string("Hello, serial!\n");
     
-    halt();
+    kernel_panic("Kernel reached end of 'kernel_main' function.");
 }
