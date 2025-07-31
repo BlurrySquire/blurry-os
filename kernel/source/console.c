@@ -36,6 +36,10 @@ void console_set_colour(uint32_t foreground, uint32_t background) {
 }
 
 void console_clear() {
+    if (_framebuffer == NULL) {
+        return;
+    }
+
     for (size_t y = 0; y < _framebuffer->height; y++) {
         for (size_t x = 0; x < _framebuffer->width; x++) {
             _framebuffer_set_pixel(x, y, _background);
@@ -44,6 +48,10 @@ void console_clear() {
 }
 
 void console_print_char(const char character) {
+    if (_framebuffer == NULL) {
+        return;
+    }
+
     if (character < 0) {
         return;
     }
