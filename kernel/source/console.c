@@ -2,7 +2,11 @@
 
 #include "font8x8_basic.h"
 
+#include "vsnprintf.h"
+
 #include <stddef.h>
+#include <stdarg.h>
+#include <stdbool.h>
 
 /* Internal variables use a '_' prefix. */
 struct limine_framebuffer* _framebuffer = NULL;
@@ -47,7 +51,7 @@ void console_clear() {
     }
 }
 
-void console_print_char(const char character) {
+void console_putchar(const char character) {
     if (_framebuffer == NULL) {
         return;
     }
@@ -62,7 +66,7 @@ void console_print_char(const char character) {
     }
     else if (character == '\t') {
         for (size_t i = 0; i < 4; i++) {
-            console_print_char(' ');
+            console_putchar(' ');
         }
         return;
     }
@@ -86,8 +90,18 @@ void console_print_char(const char character) {
     }
 }
 
-void console_print(const char* string) {
+void console_putstr(const char* string) {
     for (size_t i = 0; string[i] != '\0'; i++) {
-        console_print_char(string[i]);
+        console_putchar(string[i]);
     }
+}
+
+void console_printf(const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    char buffer[512];
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
+
+    console_putstr(buffer);
 }

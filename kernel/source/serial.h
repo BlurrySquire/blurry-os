@@ -3,9 +3,9 @@
 
 int serial_init();
 
-void serial_send_char(const char character);
-void serial_send_string(const char* string);
+void serial_putchar(const char character);
+void serial_putstr(const char* string);
 
-char serial_receive_char();
+void serial_printf(const char* fmt, ...);
 
 #endif

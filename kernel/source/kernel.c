@@ -44,10 +44,8 @@ void kernel_main(void) {
     console_set_framebuffer(framebuffer);
     console_clear();
 
-    console_print("Hello, kernel!\n");
-    console_print("Hello, kernel!\n");
-
-    serial_send_string("Hello, serial!\n");
+    console_printf("Hello, kernel!\n");
+    serial_printf("Hello, serial!\n");
     
     kernel_panic("Kernel reached end of 'kernel_main' function.");
 }

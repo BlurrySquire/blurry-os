@@ -1,7 +1,8 @@
 #include "gdt.h"
 
-#include "console.h"
 #include "memory.h"
+
+#include <stdint.h>
 
 struct gdt_entry_t {
     uint32_t base;
@@ -28,8 +29,6 @@ uint64_t gdt[5];
 
 uint64_t gdt_encode_entry(struct gdt_entry_t entry) {
     if (entry.limit > 0xFFFFF) {
-        console_set_colour(CONSOLE_COLOUR_WHITE, CONSOLE_COLOUR_RED);
-        console_print("GDT: Cannot encode limits larger than 0xFFFFF.\n");
         return 0x00ULL;
     }
 

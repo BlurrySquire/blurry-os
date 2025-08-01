@@ -25,7 +25,9 @@ void console_set_colour(uint32_t foreground, uint32_t background);
 /* Clear the console. */
 void console_clear();
 
-void console_print_char(const char character);
-void console_print(const char* string);
+void console_putchar(const char character);
+void console_putstr(const char* string);
+
+void console_printf(const char* fmt, ...);
 
 #endif

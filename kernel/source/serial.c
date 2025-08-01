@@ -2,9 +2,12 @@
 
 #include "io.h"
 
+#include "vsnprintf.h"
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 /*
     https://osdev.wiki/wiki/Serial_Ports#Port_Addresses
@@ -46,7 +49,7 @@ int serial_init() {
     return 0;
 }
 
-void serial_send_char(const char character) {
+void serial_putchar(const char character) {
     if (!init) return;
 
     while ((io_read8(PORT_COM1 + 5) & 0x20) == 0);
@@ -54,22 +57,22 @@ void serial_send_char(const char character) {
     io_write8(PORT_COM1, (uint8_t)character);
 }
 
-void serial_send_string(const char* string) {
+void serial_putstr(const char* string) {
     for (size_t i = 0; string[i] != '\0'; i++) {
         if (string[i] == '\n') {
-            serial_send_char('\r');
-            serial_send_char('\n');
+            serial_putchar('\r');
+            serial_putchar('\n');
         }
         else {
-            serial_send_char(string[i]);
+            serial_putchar(string[i]);
         }
     }
 }
 
-char serial_receive_char() {
-    if (!init) return 0;
+void serial_printf(const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
 
-    while ((io_read8(PORT_COM1 + 5) & 1) == 0);
-
-    return io_read8(PORT_COM1);
+    char buffer[512];
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
 }
