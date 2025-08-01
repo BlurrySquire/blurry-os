@@ -38,6 +38,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
                     break;
                 }
 
+                case 'i':
                 case 'd': {
                     int d = va_arg(args, int);
                     char buffer[22];
@@ -66,7 +67,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
 
                 case 'l': {
                     p++;
-                    if (*p == 'd') {
+                    if (*p == 'd' || *p == 'i') {
                         int64_t ld = va_arg(args, long);
                         char buffer[22];
                         format_int(ld, buffer);
