@@ -4,8 +4,8 @@
 
 #include "console/console.h"
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "types/int.h"
+#include "types/bool.h"
 
 /*
     It is really rare for serial to

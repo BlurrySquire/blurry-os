@@ -19,7 +19,7 @@ C_FLAGS  := \
 	-mno-sse2 \
 	-mno-red-zone \
 	-mcmodel=kernel \
-	-I../limine
+	-Isource
 
 AS_FLAGS := \
 	$(C_FLAGS)

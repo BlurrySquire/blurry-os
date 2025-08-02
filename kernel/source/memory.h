@@ -1,7 +1,7 @@
 #ifndef _H_MEMORY
 #define _H_MEMORY
 
-#include <stddef.h>
+#include "types/def.h"
 
 void* memcpy(void* dest, const void* src, size_t n);
 void* memset(void* s, int c, size_t n);

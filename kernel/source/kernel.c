@@ -1,6 +1,6 @@
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
+#include "types/int.h"
+#include "types/bool.h"
+#include "types/def.h"
 
 #include <limine.h>
 

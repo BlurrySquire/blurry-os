@@ -2,12 +2,11 @@
 
 #include "io.h"
 
-#include "vsnprintf.h"
-
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include <stdarg.h>
+#include "types/string.h"
+#include "types/int.h"
+#include "types/def.h"
+#include "types/bool.h"
+#include "types/args.h"
 
 /*
     https://osdev.wiki/wiki/Serial_Ports#Port_Addresses
@@ -75,4 +74,6 @@ void serial_printf(const char* fmt, ...) {
 
     char buffer[512];
     vsnprintf(buffer, sizeof(buffer), fmt, args);
+
+    serial_putstr(buffer);
 }

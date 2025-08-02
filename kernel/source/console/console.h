@@ -1,9 +1,9 @@
 #ifndef _H_CONSOLE
 #define _H_CONSOLE
 
-#include <stdint.h>
+#include "types/int.h"
 
-#include <limine.h>
+#include "limine.h"
 
 #define RGB(r, g, b) (uint32_t)((((r) & 0xFF) << 16) | (((g) & 0xFF) << 8) | (((b) & 0xFF) << 0))
 

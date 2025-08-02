@@ -2,7 +2,7 @@
 
 #include "memory.h"
 
-#include <stdint.h>
+#include "types/int.h"
 
 struct gdt_entry_t {
     uint32_t base;

@@ -1,7 +1,7 @@
 #ifndef _H_IO
 #define _H_IO
 
-#include <stdint.h>
+#include "types/int.h"
 
 /*
     io_writex:

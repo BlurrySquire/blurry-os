@@ -1,6 +1,6 @@
 #include "memory.h"
 
-#include <stdint.h>
+#include "types/int.h"
 
 void *memcpy(void *dest, const void *src, size_t n) {
     uint8_t *pdest = (uint8_t *)dest;

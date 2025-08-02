@@ -1,14 +1,55 @@
-#include "vsnprintf.h"
+#include "string.h"
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "types/bool.h"
+
+size_t strlen(const char* s) {
+    size_t i = 0;
+
+    while (s[i] != '\0') {
+        i++;
+    }
+
+    return i;
+}
+
+int strcmp(const char *s1, const char *s2) {
+    size_t i = 0;
+
+    while (s1[i] == s2[i]) {
+        if (s1[i] == '\0' || s2[i] == '\0') {
+            return 0;
+        }
+
+        i++;
+    }
+
+    return s1[i] - s2[i];
+}
+
+void strcpy(char *restrict dest, const char *restrict src) {
+    size_t i = 0;
+
+    while (src[i] != '\0') {
+        dest[i] = src[i];
+        i++;
+    }
+
+    dest[i] = '\0';
+}
+
+void snprintf(char* dest, size_t maxlen, const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    vsnprintf(dest, maxlen, fmt, args);
+}
 
 void format_int(int64_t value, char* buffer);
 void format_uint(uint64_t value, char* buffer);
 void format_hex(uint64_t value, bool uppercase, char* buffer);
 
-void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
-    char* p = (char*)format;
+void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
+    char* p = (char*)fmt;
     size_t i = 0;
 
     while (*p != '\0' && i < (maxlen - 1)) {
@@ -16,14 +57,14 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
             p++;
             switch (*p) {
                 case '%': {
-                    out[i++] = '%';
+                    dest[i++] = '%';
 
                     break;
                 }
 
                 case 'c': {
                     char c = (char)va_arg(args, int);
-                    out[i++] = c;
+                    dest[i++] = c;
 
                     break;
                 }
@@ -31,7 +72,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
                 case 's': {
                     char* s = va_arg(args, char*);
                     while (*s != '\0') {
-                        out[i++] = *s;
+                        dest[i++] = *s;
                         s++;
                     }
 
@@ -46,7 +87,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
 
                     int j = 0;
                     while (buffer[j]) {
-                        out[i++] = buffer[j++];
+                        dest[i++] = buffer[j++];
                     }
 
                     break;
@@ -59,7 +100,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
 
                     int j = 0;
                     while (buffer[j]) {
-                        out[i++] = buffer[j++];
+                        dest[i++] = buffer[j++];
                     }
 
                     break;
@@ -74,7 +115,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
                         
                         int j = 0;
                         while (buffer[j]) {
-                            out[i++] = buffer[j++];
+                            dest[i++] = buffer[j++];
                         }
 
                         break;
@@ -86,7 +127,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
                         
                         int j = 0;
                         while (buffer[j]) {
-                            out[i++] = buffer[j++];
+                            dest[i++] = buffer[j++];
                         }
 
                         break;
@@ -103,7 +144,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
 
                     int j = 0;
                     while (buffer[j]) {
-                        out[i++] = buffer[j++];
+                        dest[i++] = buffer[j++];
                     }
 
                     break;
@@ -116,7 +157,7 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
 
                     int j = 0;
                     while (buffer[j]) {
-                        out[i++] = buffer[j++];
+                        dest[i++] = buffer[j++];
                     }
 
                     break;
@@ -128,13 +169,13 @@ void vsnprintf(char *out, size_t maxlen, const char *format, va_list args) {
             }
         }
         else {
-            out[i++] = *p;
+            dest[i++] = *p;
         }
         
         p++;
     }
 
-    out[i] = '\0';
+    dest[i] = '\0';
 }
 
 void format_int(int64_t value, char* buffer) {
