@@ -12,6 +12,30 @@
 
 #include "gdt.h"
 
+bool hypervisor_is_present(void) {
+    uint32_t eax = 1, ebx, ecx, edx;
+    asm volatile (
+        "cpuid"
+        : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+    );
+    return ((ecx >> 31) & 1);
+}
+
+void hypervisor_get_vendor(char vendor[13]) {
+    uint32_t eax = 0x40000000, ebx, ecx, edx;
+
+    asm volatile (
+        "cpuid"
+        : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+    );
+
+    *(uint32_t*)(vendor + 0) = ebx;
+    *(uint32_t*)(vendor + 4) = ecx;
+    *(uint32_t*)(vendor + 8) = edx;
+
+    vendor[12] = '\0';
+}
+
 void kernel_main(void) {
     /*
         Serial is really useful for printing errors
@@ -27,6 +51,13 @@ void kernel_main(void) {
             or shutdown.
         */
         kernel_panic("Limine requested base revision unsuported.");
+    }
+
+    if (hypervisor_is_present()) {
+        char vendor[13];
+        hypervisor_get_vendor(vendor);
+
+        serial_printf("Hypervisor present: %s\n", vendor);
     }
 
     gdt_setup();
