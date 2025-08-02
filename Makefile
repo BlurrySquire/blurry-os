@@ -1,16 +1,21 @@
 TARGET := myos.hdd
 TARGET_DEPS := \
-	kernel/build/kernel.elf \
-	limine.conf \
-	limine
+	limine \
+	kernel/build/kernel.elf
 
 all: $(TARGET)
 
 $(TARGET): $(TARGET_DEPS)
 	./scripts/make_disk.sh
 
+# Build kernel dependency
 kernel/build/kernel.elf: kernel/source/*.*
 	$(MAKE) -C kernel all
+
+# Get limine dependency
+limine:
+	git clone https://github.com/limine-bootloader/limine.git --branch=v9.x-binary --depth=1
+	$(MAKE) -C limine
 
 run:
 	qemu-system-x86_64 \

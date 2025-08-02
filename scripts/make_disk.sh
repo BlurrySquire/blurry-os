@@ -19,8 +19,6 @@ PART2_SECTOR=$(sgdisk -i 2 "$TARGET" | grep 'First sector' | awk '{print $3}')
 PART1_OFFSET=$(($PART1_SECTOR * $SECTOR_SIZE))
 PART2_OFFSET=$(($PART2_SECTOR * $SECTOR_SIZE))
 
-git clone https://github.com/limine-bootloader/limine.git --branch=v9.x-binary --depth=1
-make -C limine
 ./limine/limine bios-install $TARGET
 
 mformat -F -i $TARGET@@$PART1_OFFSET
