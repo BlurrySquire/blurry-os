@@ -5,9 +5,10 @@
 #include <limine.h>
 
 #include "limine_requests.h"
-#include "console.h"
 #include "serial.h"
 #include "panic.h"
+
+#include "console/console.h"
 
 #include "gdt.h"
 

@@ -1,7 +1,8 @@
 #include "panic.h"
 
 #include "serial.h"
-#include "console.h"
+
+#include "console/console.h"
 
 #include <stdint.h>
 #include <stdbool.h>
