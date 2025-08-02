@@ -1,7 +1,7 @@
 #ifndef _H_LIMINE_REQUESTS
 #define _H_LIMINE_REQUESTS
 
-#include <limine.h>
+#include "limine.h"
 
 __attribute__((used, section(".limine_requests")))
 static volatile LIMINE_BASE_REVISION(3);

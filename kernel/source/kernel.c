@@ -2,7 +2,7 @@
 #include "types/bool.h"
 #include "types/def.h"
 
-#include <limine.h>
+#include "limine.h"
 
 #include "limine_requests.h"
 #include "serial.h"
