@@ -1,6 +1,9 @@
 # My OS
 For a lack of name generating skills, I have left the name as ``my-os``. This will stay this way until I, or others, can come up with a fitting name. My-os is an x86_64 only OS that supports both BIOS and UEFI. It is compliant with the [Limine](https://limine-bootloader.org/) protocol.
 
+## Notes
+- This really doesn't do much at the moment. There is no userspace, it just simply sets some things up and prints to the screen.
+
 ## Dependencies
 - You will need to have a cross compiler installed on your system. Currently the build system only supports ``gcc`` compiled to target ``x86_64-elf-gcc``. A guide for building a cross compiler is [here](https://wiki.osdev.org/GCC_Cross-Compiler), provided by [wiki.osdev.org](https://wiki.osdev.org/).
 
