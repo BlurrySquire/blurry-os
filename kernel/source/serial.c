@@ -62,6 +62,11 @@ void serial_putstr(const char* string) {
             serial_putchar('\r');
             serial_putchar('\n');
         }
+        else if (string[i] == '\t') {
+            for (size_t i = 0; i < 4; i++) {
+                serial_putchar(' ');
+            }
+        }
         else {
             serial_putchar(string[i]);
         }
