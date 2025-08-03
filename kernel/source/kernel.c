@@ -10,7 +10,11 @@
 
 #include "console/console.h"
 
+#include "memory/pages.h"
+
 #include "gdt.h"
+
+#define PHYSICAL_MEM_START 0xFFFF800000000000UL
 
 bool hypervisor_is_present(void) {
     uint32_t eax = 1, ebx, ecx, edx;
@@ -60,6 +64,24 @@ void kernel_main(void) {
         serial_printf("Hypervisor present: %s\n", vendor);
     }
 
+    if (memmap_request.response == NULL) {
+        kernel_panic("Unable to get memamp from Limine.\n");
+    }
+
+    struct limine_memmap_response* memmap_response = memmap_request.response;
+    page_init_bitmap(memmap_response);
+
+    void* address1 = palloc();
+    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address1);
+    
+    void* address2 = palloc();
+    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address2);
+    
+    pfree(address1);
+
+    void* address3 = palloc();
+    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address3);
+
     gdt_setup();
 
     if (framebuffer_request.response == NULL || framebuffer_request.response->framebuffer_count < 1) {
@@ -76,8 +98,9 @@ void kernel_main(void) {
     console_set_framebuffer(framebuffer);
     console_clear();
 
-    console_printf("Hello, kernel!\n");
+    console_printf("Hello, kernel!\n\n");
     serial_printf("Hello, serial!\n");
     
+    kernel_hang();
     kernel_panic("Kernel reached end of 'kernel_main' function.");
 }
