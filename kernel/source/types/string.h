@@ -2,6 +2,7 @@
 #define _H_STRING
 
 #include "types/int.h"
+#include "types/def.h"
 #include "types/args.h"
 
 size_t strlen(const char* s);
