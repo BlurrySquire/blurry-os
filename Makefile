@@ -9,7 +9,7 @@ $(TARGET): $(TARGET_DEPS)
 	./scripts/make_disk.sh
 
 # Build kernel dependency
-kernel/build/kernel.elf: kernel/source/*.*
+kernel/build/kernel.elf: kernel/source/*.* kernel/source/*/*.*
 	$(MAKE) -C kernel all
 
 # Get limine dependency
