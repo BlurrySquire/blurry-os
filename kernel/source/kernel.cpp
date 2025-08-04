@@ -13,32 +13,30 @@
 
 #include "gdt.h"
 
-extern "C" {
-    #define PHYSICAL_MEM_START 0xFFFF800000000000UL
+#define PHYSICAL_MEM_START 0xFFFF800000000000UL
 
-    bool hypervisor_is_present() {
-        uint32_t eax = 1, ebx, ecx, edx;
-        asm volatile (
-            "cpuid"
-            : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
-        );
-        return ((ecx >> 31) & 1);
-    }
+bool hypervisor_is_present() {
+    uint32_t eax = 1, ebx, ecx, edx;
+    asm volatile (
+        "cpuid"
+        : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+    );
+    return ((ecx >> 31) & 1);
+}
 
-    void hypervisor_get_vendor(char vendor[13]) {
-        uint32_t eax = 0x40000000, ebx, ecx, edx;
+void hypervisor_get_vendor(char vendor[13]) {
+    uint32_t eax = 0x40000000, ebx, ecx, edx;
 
-        asm volatile (
-            "cpuid"
-            : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
-        );
+    asm volatile (
+        "cpuid"
+        : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+    );
 
-        *(uint32_t*)(vendor + 0) = ebx;
-        *(uint32_t*)(vendor + 4) = ecx;
-        *(uint32_t*)(vendor + 8) = edx;
+    *(uint32_t*)(vendor + 0) = ebx;
+    *(uint32_t*)(vendor + 4) = ecx;
+    *(uint32_t*)(vendor + 8) = edx;
 
-        vendor[12] = '\0';
-    }
+    vendor[12] = '\0';
 }
 
 void kernel_main() {
