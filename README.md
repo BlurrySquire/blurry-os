@@ -9,6 +9,8 @@ For a lack of name generating skills, I have left the name as ``my-os``. This wi
 
 - You also need to have [Qemu](https://www.qemu.org/) installed, specifically ``qemu-system-x86_64``.
 
+- If you wish to view the source code in an editor and are using clangd you might want to generate the compilation database using ``bear -- make clean all``.
+
 ## Building
 - In the root directory run ``make all``. The Makefile should collect all dependencies, build the kernel and then the disk image. In the future I may make separate commands for building the disk image and the kernel separately.
 

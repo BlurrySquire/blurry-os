@@ -1,6 +1,10 @@
 # Build files
 kernel/build
 
+# Bear and clangd files
+.cache
+compile_commands.json
+
 # Dependencies
 limine
 
