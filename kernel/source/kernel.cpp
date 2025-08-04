@@ -1,5 +1,4 @@
 #include "types/int.h"
-#include "types/bool.h"
 #include "types/def.h"
 
 #include "limine.h"
@@ -14,33 +13,35 @@
 
 #include "gdt.h"
 
-#define PHYSICAL_MEM_START 0xFFFF800000000000UL
+extern "C" {
+    #define PHYSICAL_MEM_START 0xFFFF800000000000UL
 
-bool hypervisor_is_present(void) {
-    uint32_t eax = 1, ebx, ecx, edx;
-    asm volatile (
-        "cpuid"
-        : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
-    );
-    return ((ecx >> 31) & 1);
+    bool hypervisor_is_present() {
+        uint32_t eax = 1, ebx, ecx, edx;
+        asm volatile (
+            "cpuid"
+            : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+        );
+        return ((ecx >> 31) & 1);
+    }
+
+    void hypervisor_get_vendor(char vendor[13]) {
+        uint32_t eax = 0x40000000, ebx, ecx, edx;
+
+        asm volatile (
+            "cpuid"
+            : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+        );
+
+        *(uint32_t*)(vendor + 0) = ebx;
+        *(uint32_t*)(vendor + 4) = ecx;
+        *(uint32_t*)(vendor + 8) = edx;
+
+        vendor[12] = '\0';
+    }
 }
 
-void hypervisor_get_vendor(char vendor[13]) {
-    uint32_t eax = 0x40000000, ebx, ecx, edx;
-
-    asm volatile (
-        "cpuid"
-        : "+a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
-    );
-
-    *(uint32_t*)(vendor + 0) = ebx;
-    *(uint32_t*)(vendor + 4) = ecx;
-    *(uint32_t*)(vendor + 8) = edx;
-
-    vendor[12] = '\0';
-}
-
-void kernel_main(void) {
+void kernel_main() {
     /*
         Serial is really useful for printing errors
         and useful info when nothing else on the
@@ -103,4 +104,29 @@ void kernel_main(void) {
     
     kernel_hang();
     kernel_panic("Kernel reached end of 'kernel_main' function.");
+}
+
+extern "C" {
+    typedef void (*constructor)();
+
+    constructor _ctors_start[0];
+    constructor _ctors_end[0];
+
+    __attribute__((noreturn))
+    void kernel_start(void) {
+
+        // Call all global constructors
+        uint64_t count = ((uint64_t)&_ctors_end - (uint64_t)&_ctors_end) / sizeof(void*);
+        for (uint64_t i = 0; i < count; i++) {
+            _ctors_start[i]();
+        }
+
+        kernel_main();
+
+        while (true) {
+            asm volatile (
+                "hlt"
+            );
+        }
+    }
 }

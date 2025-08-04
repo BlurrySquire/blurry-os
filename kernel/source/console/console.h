@@ -1,6 +1,10 @@
 #ifndef _H_CONSOLE
 #define _H_CONSOLE
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "types/int.h"
 
 #include "limine.h"
@@ -29,5 +33,9 @@ void console_putchar(const char character);
 void console_putstr(const char* string);
 
 void console_printf(const char* fmt, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

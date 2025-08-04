@@ -1,8 +1,9 @@
 GCC	:= x86_64-elf-gcc
+G++ := x86_64-elf-g++
 AS  := x86_64-elf-as
 LD 	:= x86_64-elf-ld
 
-C_FLAGS  := \
+C_FLAGS := \
 	-Wall \
 	-Wextra \
 	-std=gnu11 \
@@ -21,6 +22,27 @@ C_FLAGS  := \
 	-mcmodel=kernel \
 	-Isource
 
+CPP_FLAGS := \
+	-Wall \
+	-Wextra \
+	-ffreestanding \
+	-fno-stack-protector \
+	-fno-stack-check \
+	-fno-lto \
+	-fno-PIC \
+	-m64 \
+	-march=x86-64 \
+	-mno-80387 \
+	-mno-mmx \
+	-mno-sse \
+	-mno-sse2 \
+	-mno-red-zone \
+	-mcmodel=kernel \
+	-Isource \
+	-DLIMINE_API_REVISION=3 \
+	-MMD \
+	-MP
+
 AS_FLAGS := \
 	$(C_FLAGS)
 
@@ -36,7 +58,8 @@ TARGET := build/kernel.elf
 # Find all the files to compile
 C_SOURCES   := $(wildcard source/*.c) $(wildcard source/*/*.c)
 AS_SOURCES  := $(wildcard source/*.S) $(wildcard source/*/*.S)
-OBJECTS	  := $(C_SOURCES:source/%.c=build/%.o) $(AS_SOURCES:source/%.S=build/%.S)
+CPP_SOURCES := $(wildcard source/*.cpp) $(wildcard source/*/*.cpp)
+OBJECTS	  := $(C_SOURCES:source/%.c=build/%.o) $(AS_SOURCES:source/%.S=build/%.S) $(CPP_SOURCES:source/%.cpp=build/%.o)
 
 all: $(TARGET)
 
@@ -50,6 +73,10 @@ build/%.o: source/%.c
 build/%.o: source/%.S
 	@mkdir -p $(dir $@)
 	$(AS) $(AS_FLAGS) -c $< -o $@
+
+build/%.o: source/%.cpp
+	@mkdir -p $(dir $@)
+	$(G++) $(CPP_FLAGS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
 	$(LD) $(LD_FLAGS) $(OBJECTS) -o $@

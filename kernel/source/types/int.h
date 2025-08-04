@@ -1,6 +1,10 @@
 #ifndef _H_TYPES_INT
 #define _H_TYPES_INT
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef signed char int8_t;
 typedef signed short int16_t;
 typedef signed int int32_t;
@@ -36,5 +40,9 @@ typedef uint64_t uintptr_t;
 #define UINT64_MAX      (18446744073709551615)
 
 #define UINTPTR_MAX     UINT64_MAX
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

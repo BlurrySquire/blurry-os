@@ -1,6 +1,10 @@
 #ifndef _H_TYPES_DEF
 #define _H_TYPES_DEF
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef unsigned long   size_t;
 typedef signed long     ptrdiff_t;
 
@@ -12,5 +16,9 @@ typedef signed long     ptrdiff_t;
 #define NULL ((void*)0)
 
 #define offsetof(type, member) __builtin_offsetof(type, member)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

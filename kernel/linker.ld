@@ -1,5 +1,5 @@
 OUTPUT_FORMAT(elf64-x86-64)
-ENTRY(kernel_main)
+ENTRY(kernel_start)
 
 /* Define the program headers we want so the bootloader gives us the right */
 /* MMU permissions; this also allows us to exert more control over the linking */
@@ -32,6 +32,10 @@ SECTIONS
 
     .text : {
         *(.text .text.*)
+        
+        _ctors_start = .;
+        KEEP(*(.init_array .ctors))
+        _ctors_end = .;
     } :text
 
     /* Move to the next memory page for .rodata */

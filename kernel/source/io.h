@@ -1,6 +1,10 @@
 #ifndef _H_IO
 #define _H_IO
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "types/int.h"
 
 /*
@@ -24,5 +28,9 @@ uint16_t io_read16(uint16_t port);
 uint32_t io_read32(uint16_t port);
 
 void io_wait();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

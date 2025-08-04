@@ -1,6 +1,7 @@
 #include "string.h"
 
 #include "types/bool.h"
+#include "types/int.h"
 
 size_t strlen(const char* s) {
     size_t i = 0;
