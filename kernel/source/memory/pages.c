@@ -8,6 +8,7 @@
 
 uint64_t total_pages = 0;
 uint64_t bitmap_size = 0;
+uint64_t bitmap_size_pages = 0;
 uintptr_t bitmap_phys_addr = 0;
 
 uint8_t* bitmap = NULL;
@@ -32,12 +33,19 @@ void page_init_bitmap(struct limine_memmap_response* memmap) {
         struct limine_memmap_entry* entry = memmap->entries[i];
 
         if (entry->type == LIMINE_MEMMAP_USABLE && entry->length >= bitmap_size) {
-            bitmap_phys_addr = entry->base;
-            break;
+            // We should be aligned to a page, so make sure we are.
+            if (entry->length % PAGE_SIZE == 0) {
+                bitmap_phys_addr = entry->base;
+                break;
+            }
         }
     }
 
     bitmap = (uint8_t*)(bitmap_phys_addr + PHYSICAL_MEM_START);
+    bitmap_size_pages = (bitmap_size / PAGE_SIZE);
+    if (bitmap_size % PAGE_SIZE) {
+        bitmap_size_pages += 1;
+    }
 
     // Fill in the bitmap with pages
     for (size_t i = 0; i < memmap->entry_count; i++) {
@@ -53,6 +61,10 @@ void page_init_bitmap(struct limine_memmap_response* memmap) {
                 state = PAGE_STATE_RESERVED;
                 break;
             
+            case LIMINE_MEMMAP_KERNEL_AND_MODULES:
+                state = PAGE_STATE_USED;
+                break;
+            
             default:
                 state = PAGE_STATE_RESERVED;
                 break;
@@ -66,6 +78,16 @@ void page_init_bitmap(struct limine_memmap_response* memmap) {
             bitmap[byte_index] &= ~(0x3 << bit_offset);
             bitmap[byte_index] |= (state << bit_offset);
         }
+    }
+
+    // Now set the pages that the bitmap uses as used
+    uint64_t offset = bitmap_phys_addr / PAGE_SIZE;
+    for (size_t i = 0; i < bitmap_size_pages; i++) {
+        size_t byte_index = (i + offset) / 4;
+        size_t bit_offset = ((1 + offset) % 4) * 2;
+
+        bitmap[byte_index] &= ~(0x3 << bit_offset);
+        bitmap[byte_index] |= (PAGE_STATE_USED << bit_offset);
     }
 }
 
