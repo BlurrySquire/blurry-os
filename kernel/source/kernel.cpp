@@ -11,8 +11,6 @@
 
 #include "memory/pages.h"
 
-#include "gdt.h"
-
 #define PHYSICAL_MEM_START 0xFFFF800000000000UL
 
 bool hypervisor_is_present() {
@@ -81,8 +79,6 @@ void kernel_main() {
     void* address3 = palloc();
     serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address3);
 
-    gdt_setup();
-
     if (framebuffer_request.response == NULL || framebuffer_request.response->framebuffer_count < 1) {
         /*
             Either a display isn't connected or the
@@ -106,12 +102,14 @@ void kernel_main() {
 
 extern "C" {
     typedef void (*constructor)();
-
     constructor _ctors_start[0];
     constructor _ctors_end[0];
 
+    extern void LoadGDT(void);
+
     __attribute__((noreturn))
     void kernel_start(void) {
+        LoadGDT();
 
         // Call all global constructors
         uint64_t count = ((uint64_t)&_ctors_end - (uint64_t)&_ctors_end) / sizeof(void*);
