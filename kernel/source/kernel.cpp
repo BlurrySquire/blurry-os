@@ -4,8 +4,9 @@
 #include "limine.h"
 
 #include "limine_requests.h"
-#include "serial.h"
-#include "panic.h"
+
+#include "panic.hpp"
+#include "serial.hpp"
 
 #include "console/console.h"
 
@@ -43,7 +44,7 @@ void kernel_main() {
         and useful info when nothing else on the
         device is setup, so we initialise it first.
     */
-    serial_init();
+    Serial::Init();
     
     if (LIMINE_BASE_REVISION_SUPPORTED == false) {
         /*
@@ -51,33 +52,33 @@ void kernel_main() {
             revision. It is probably best to just hang
             or shutdown.
         */
-        kernel_panic("Limine requested base revision unsuported.");
+        KernelPanic("Limine requested base revision unsuported.");
     }
 
     if (hypervisor_is_present()) {
         char vendor[13];
         hypervisor_get_vendor(vendor);
 
-        serial_printf("Hypervisor present: %s\n", vendor);
+        Serial::Print("Hypervisor present: %s\n", vendor);
     }
 
     if (memmap_request.response == NULL) {
-        kernel_panic("Unable to get memamp from Limine.\n");
+        KernelPanic("Unable to get memamp from Limine.\n");
     }
 
     struct limine_memmap_response* memmap_response = memmap_request.response;
     page_init_bitmap(memmap_response);
 
     void* address1 = palloc();
-    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address1);
+    Serial::Print("Allocated a page at address 0x%x\n", (uint64_t)address1);
     
     void* address2 = palloc();
-    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address2);
+    Serial::Print("Allocated a page at address 0x%x\n", (uint64_t)address2);
     
     pfree(address1);
 
     void* address3 = palloc();
-    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address3);
+    Serial::Print("Allocated a page at address 0x%x\n", (uint64_t)address3);
 
     if (framebuffer_request.response == NULL || framebuffer_request.response->framebuffer_count < 1) {
         /*
@@ -85,7 +86,7 @@ void kernel_main() {
             bootloader was unable to get a framebuffer
             from the GPU.
         */
-        kernel_panic("Unable to get a framebuffer from Limine.");
+        KernelPanic("Unable to get a framebuffer from Limine.");
     }
 
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
@@ -94,10 +95,10 @@ void kernel_main() {
     console_clear();
 
     console_printf("Hello, kernel!\n\n");
-    serial_printf("Hello, serial!\n");
+    Serial::Print("Hello, serial!\n");
     
-    kernel_hang();
-    kernel_panic("Kernel reached end of 'kernel_main' function.");
+    KernelHang();
+    KernelPanic("Kernel reached end of 'kernel_main' function.");
 }
 
 extern "C" {

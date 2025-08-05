@@ -2,8 +2,6 @@
 
 #include "types/int.h"
 
-#include "serial.h"
-
 #define PHYSICAL_MEM_START  0xFFFF800000000000UL
 
 uint64_t total_pages = 0;
