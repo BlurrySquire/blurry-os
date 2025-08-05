@@ -1,6 +1,6 @@
 GCC	:= x86_64-elf-gcc
 G++ := x86_64-elf-g++
-AS  := x86_64-elf-as
+AS  := x86_64-elf-gcc
 LD 	:= x86_64-elf-ld
 
 C_FLAGS := \
@@ -59,7 +59,7 @@ TARGET := build/kernel.elf
 C_SOURCES   := $(wildcard source/*.c) $(wildcard source/*/*.c)
 AS_SOURCES  := $(wildcard source/*.S) $(wildcard source/*/*.S)
 CPP_SOURCES := $(wildcard source/*.cpp) $(wildcard source/*/*.cpp)
-OBJECTS	  := $(C_SOURCES:source/%.c=build/%.o) $(AS_SOURCES:source/%.S=build/%.S) $(CPP_SOURCES:source/%.cpp=build/%.o)
+OBJECTS	  := $(C_SOURCES:source/%.c=build/%.o) $(AS_SOURCES:source/%.S=build/%.o) $(CPP_SOURCES:source/%.cpp=build/%.o)
 
 all: $(TARGET)
 
