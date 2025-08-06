@@ -10,7 +10,10 @@
 
 #include "console/console.h"
 
-#include "memory/pages.h"
+#include "memory/page_allocator.hpp"
+
+__attribute__((used, section(".limine_requests")))
+static volatile LIMINE_BASE_REVISION(3);
 
 #define PHYSICAL_MEM_START 0xFFFF800000000000UL
 
@@ -61,25 +64,6 @@ void kernel_main() {
 
         Serial::Print("Hypervisor present: %s\n", vendor);
     }
-
-    if (memmap_request.response == NULL) {
-        KernelPanic("Unable to get memamp from Limine.\n");
-    }
-
-    struct limine_memmap_response* memmap_response = memmap_request.response;
-    page_init_bitmap(memmap_response);
-
-    void* address1 = palloc();
-    Serial::Print("Allocated a page at address 0x%x\n", (uint64_t)address1);
-    
-    void* address2 = palloc();
-    Serial::Print("Allocated a page at address 0x%x\n", (uint64_t)address2);
-    
-    pfree(address1);
-
-    void* address3 = palloc();
-    Serial::Print("Allocated a page at address 0x%x\n", (uint64_t)address3);
-
     if (framebuffer_request.response == NULL || framebuffer_request.response->framebuffer_count < 1) {
         /*
             Either a display isn't connected or the
@@ -111,6 +95,8 @@ extern "C" {
     __attribute__((noreturn))
     void kernel_start(void) {
         LoadGDT();
+
+        Memory::InitPageAllocator();
 
         // Call all global constructors
         uint64_t count = ((uint64_t)&_ctors_end - (uint64_t)&_ctors_end) / sizeof(void*);
