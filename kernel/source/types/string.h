@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "types/def.h"
+#include "types/int.h"
 #include "types/args.h"
 
 size_t strlen(const char* s);
