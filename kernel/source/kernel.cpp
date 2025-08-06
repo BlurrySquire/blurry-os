@@ -90,6 +90,7 @@ extern "C" {
     constructor _ctors_start[0];
     constructor _ctors_end[0];
 
+    /* From source/gdt.S */
     extern void LoadGDT(void);
 
     __attribute__((noreturn))
@@ -98,7 +99,7 @@ extern "C" {
 
         Memory::InitPageAllocator();
 
-        // Call all global constructors
+        /* Call all global constructors for C++ objects */
         uint64_t count = ((uint64_t)&_ctors_end - (uint64_t)&_ctors_end) / sizeof(void*);
         for (uint64_t i = 0; i < count; i++) {
             _ctors_start[i]();
