@@ -5,12 +5,10 @@
 extern "C" {
 #endif
 
-typedef unsigned long   size_t;
 typedef signed long     ptrdiff_t;
 
 #define PTRDIFF_MIN     (-9223372036854775808)
 
-#define SIZE_MAX        (18446744073709551615)
 #define PTRDIFF_MAX     (9223372036854775807)
 
 #define NULL ((void*)0)
