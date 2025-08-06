@@ -6,7 +6,6 @@ LD 	:= x86_64-elf-ld
 C_FLAGS := \
 	-Wall \
 	-Wextra \
-	-std=gnu11 \
 	-ffreestanding \
 	-fno-stack-protector \
 	-fno-stack-check \
@@ -23,22 +22,7 @@ C_FLAGS := \
 	-Isource
 
 CPP_FLAGS := \
-	-Wall \
-	-Wextra \
-	-ffreestanding \
-	-fno-stack-protector \
-	-fno-stack-check \
-	-fno-lto \
-	-fno-PIC \
-	-m64 \
-	-march=x86-64 \
-	-mno-80387 \
-	-mno-mmx \
-	-mno-sse \
-	-mno-sse2 \
-	-mno-red-zone \
-	-mcmodel=kernel \
-	-Isource \
+	$(C_FLAGS) \
 	-DLIMINE_API_REVISION=3 \
 	-MMD \
 	-MP
@@ -68,7 +52,7 @@ clean:
 
 build/%.o: source/%.c
 	@mkdir -p $(dir $@)
-	$(GCC)	$(C_FLAGS) -c $< -o $@
+	$(GCC)	$(C_FLAGS) -std=c11 -c $< -o $@
 
 build/%.o: source/%.S
 	@mkdir -p $(dir $@)
