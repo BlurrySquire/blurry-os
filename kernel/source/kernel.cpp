@@ -1,22 +1,23 @@
 #include "types/int.h"
-#include "types/bool.h"
 #include "types/def.h"
 
 #include "limine.h"
 
 #include "limine_requests.h"
-#include "serial.h"
-#include "panic.h"
+
+#include "panic.hpp"
+#include "serial.hpp"
 
 #include "console/console.h"
 
-#include "memory/pages.h"
+#include "memory/page_allocator.hpp"
 
-#include "gdt.h"
+__attribute__((used, section(".limine_requests")))
+static volatile LIMINE_BASE_REVISION(3);
 
 #define PHYSICAL_MEM_START 0xFFFF800000000000UL
 
-bool hypervisor_is_present(void) {
+bool hypervisor_is_present() {
     uint32_t eax = 1, ebx, ecx, edx;
     asm volatile (
         "cpuid"
@@ -40,13 +41,13 @@ void hypervisor_get_vendor(char vendor[13]) {
     vendor[12] = '\0';
 }
 
-void kernel_main(void) {
+void kernel_main() {
     /*
         Serial is really useful for printing errors
         and useful info when nothing else on the
         device is setup, so we initialise it first.
     */
-    serial_init();
+    Serial::Init();
     
     if (LIMINE_BASE_REVISION_SUPPORTED == false) {
         /*
@@ -54,43 +55,22 @@ void kernel_main(void) {
             revision. It is probably best to just hang
             or shutdown.
         */
-        kernel_panic("Limine requested base revision unsuported.");
+        KernelPanic("Limine requested base revision unsuported.");
     }
 
     if (hypervisor_is_present()) {
         char vendor[13];
         hypervisor_get_vendor(vendor);
 
-        serial_printf("Hypervisor present: %s\n", vendor);
+        Serial::Print("Hypervisor present: %s\n", vendor);
     }
-
-    if (memmap_request.response == NULL) {
-        kernel_panic("Unable to get memamp from Limine.\n");
-    }
-
-    struct limine_memmap_response* memmap_response = memmap_request.response;
-    page_init_bitmap(memmap_response);
-
-    void* address1 = palloc();
-    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address1);
-    
-    void* address2 = palloc();
-    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address2);
-    
-    pfree(address1);
-
-    void* address3 = palloc();
-    serial_printf("Allocated a page at address 0x%x\n", (uint64_t)address3);
-
-    gdt_setup();
-
     if (framebuffer_request.response == NULL || framebuffer_request.response->framebuffer_count < 1) {
         /*
             Either a display isn't connected or the
             bootloader was unable to get a framebuffer
             from the GPU.
         */
-        kernel_panic("Unable to get a framebuffer from Limine.");
+        KernelPanic("Unable to get a framebuffer from Limine.");
     }
 
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
@@ -99,8 +79,38 @@ void kernel_main(void) {
     console_clear();
 
     console_printf("Hello, kernel!\n\n");
-    serial_printf("Hello, serial!\n");
+    Serial::Print("Hello, serial!\n");
     
-    kernel_hang();
-    kernel_panic("Kernel reached end of 'kernel_main' function.");
+    KernelHang();
+    KernelPanic("Kernel reached end of 'kernel_main' function.");
+}
+
+extern "C" {
+    typedef void (*constructor)();
+    constructor _ctors_start[0];
+    constructor _ctors_end[0];
+
+    /* From source/gdt.S */
+    extern void LoadGDT(void);
+
+    __attribute__((noreturn))
+    void kernel_start(void) {
+        LoadGDT();
+
+        Memory::InitPageAllocator();
+
+        /* Call all global constructors for C++ objects */
+        uint64_t count = ((uint64_t)&_ctors_end - (uint64_t)&_ctors_end) / sizeof(void*);
+        for (uint64_t i = 0; i < count; i++) {
+            _ctors_start[i]();
+        }
+
+        kernel_main();
+
+        while (true) {
+            asm volatile (
+                "hlt"
+            );
+        }
+    }
 }
