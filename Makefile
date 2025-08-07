@@ -1,6 +1,7 @@
 TARGET := blurryos.hdd
 TARGET_DEPS := \
 	limine \
+	limine.conf \
 	kernel/build/kernel.elf
 
 all: $(TARGET)
