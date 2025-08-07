@@ -1,6 +1,6 @@
 #! /bin/bash
 
-TARGET=myos.hdd
+TARGET=blurryos.hdd
 SIZE_MB=128
 
 # Create an empty disk image

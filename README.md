@@ -1,19 +1,16 @@
-# My OS
-For a lack of name generating skills, I have left the name as ``my-os``. This will stay this way until I, or others, can come up with a fitting name. My-os is an x86_64 only OS that supports both BIOS and UEFI. It is compliant with the [Limine](https://limine-bootloader.org/) protocol.
-
-## Notes
-- This really doesn't do much at the moment. There is no userspace, it just simply sets some things up and prints to the screen.
+# Blurry OS
+Blurry OS is a 64-bit OS currently targeting x86_64. There are plans to potentially support other 64-bit architectures in the future. It makes use of the [Limine bootloader](https://limine-bootloader.org/) for booting via BIOS and UEFI. At the moment Blurry OS is quite minimal. It just boots the system and sets up some stuff.
 
 ## Dependencies
-- You will need to have a cross compiler installed on your system. Currently the build system only supports ``gcc`` compiled to target ``x86_64-elf-gcc``. A guide for building a cross compiler is [here](https://wiki.osdev.org/GCC_Cross-Compiler), provided by [wiki.osdev.org](https://wiki.osdev.org/).
+- You will need to have a cross compiler installed on your system. Currently the build system only supports ``gcc`` compiled to target ``x86_64-elf-gcc``. A guide for building a cross compiler is [here](https://wiki.osdev.org/GCC_Cross-Compiler), from the OS dev wiki.
 
-- You also need to have [Qemu](https://www.qemu.org/) installed, specifically ``qemu-system-x86_64``.
+- You also need to have [Qemu](https://www.qemu.org/) installed for targeting x86_64.
 
-- If you wish to view the source code in an editor and are using clangd you might want to generate the compilation database using ``bear -- make clean all``.
+- If you use clangd then you need to have [bear](https://github.com/rizsotto/Bear) installed and run the command ``bear -- make clean all`` to generate the compilation database.
 
 ## Building
-- In the root directory run ``make all``. The Makefile should collect all dependencies, build the kernel and then the disk image. In the future I may make separate commands for building the disk image and the kernel separately.
+- In the root directory run the command ``make all`` to start the build process. If you just ran the bear command before then it might already be built.
 
-- In the root directory run ``make clean`` to clean up build files and remove the final disk image.
+- You can also run Blurry OS in qemu by running ``make run``.
 
-- In the root directory run ``make run`` to run in qemu.
+- You can also clean all build files by using ``make clean``.

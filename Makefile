@@ -1,4 +1,4 @@
-TARGET := myos.hdd
+TARGET := blurryos.hdd
 TARGET_DEPS := \
 	limine \
 	kernel/build/kernel.elf
