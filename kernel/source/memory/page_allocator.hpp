@@ -10,11 +10,4 @@ namespace Memory {
     void PageFree(void* page);
 }
 
-namespace PageAllocator {
-    void Init();
-
-    void* Allocate();
-    void Free(void* page);
-};
-
 #endif
