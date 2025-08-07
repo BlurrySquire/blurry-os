@@ -21,7 +21,9 @@ run:
 	qemu-system-x86_64 \
 		-serial stdio \
 		-machine type=pc,accel=kvm -m 4096 \
-		-drive format=raw,file=$(TARGET)
+		-drive format=raw,file=$(TARGET),if=none,id=drive0 \
+		-device ahci,id=ahci \
+		-device ide-hd,drive=drive0,bus=ahci.0
 
 clean:
 	$(MAKE) -C kernel clean
