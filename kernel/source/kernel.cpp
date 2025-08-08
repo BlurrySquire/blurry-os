@@ -2,7 +2,6 @@
 #include "types/def.h"
 
 #include "limine.h"
-
 #include "limine_requests.h"
 
 #include "panic.hpp"
@@ -42,13 +41,6 @@ void hypervisor_get_vendor(char vendor[13]) {
 }
 
 void kernel_main() {
-    /*
-        Serial is really useful for printing errors
-        and useful info when nothing else on the
-        device is setup, so we initialise it first.
-    */
-    Serial::Init();
-    
     if (LIMINE_BASE_REVISION_SUPPORTED == false) {
         /*
             Bootloader doesn't support our requested
@@ -95,8 +87,17 @@ extern "C" {
 
     __attribute__((noreturn))
     void kernel_start(void) {
+        if (LIMINE_BASE_REVISION_SUPPORTED == false) {
+            while (true) {
+                asm volatile (
+                    "hlt"
+                );
+            }
+        }
+
         LoadGDT();
 
+        Serial::Init();
         Memory::InitPageAllocator();
 
         /* Call all global constructors for C++ objects */
