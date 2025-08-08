@@ -29,7 +29,7 @@ namespace IO {
         uint8_t return_value;
 
         asm volatile (
-            "inb %w1, %b0"
+            "inb %1, %0"
             : "=a"(return_value)
             : "Nd"(port)
             : "memory"
