@@ -42,8 +42,8 @@ namespace IO {
         uint16_t return_value;
 
         asm volatile (
-            "inb %w1, %b0"
-            : "=ax"(return_value)
+            "inw %1, %0"
+            : "=a"(return_value)
             : "Nd"(port)
             : "memory"
         );
@@ -55,8 +55,8 @@ namespace IO {
         uint32_t return_value;
 
         asm volatile (
-            "inb %w1, %b0"
-            : "=eax"(return_value)
+            "inl %1, %0"
+            : "=a"(return_value)
             : "Nd"(port)
             : "memory"
         );
