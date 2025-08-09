@@ -70,8 +70,26 @@ void kernel_main() {
     console_set_framebuffer(framebuffer);
     console_clear();
 
-    console_printf("Hello, kernel!\n\n");
+    console_printf("Hello, kernel!\n");
     Serial::Print("Hello, serial!\n");
+
+    // I had to google the rainbow to double check the colours
+    uint32_t colours[7] = {
+        RGB(255, 0, 0),    // Red
+        RGB(255, 127, 0),  // Orange
+        RGB(255, 255, 0),  // Yellow
+        RGB(0, 255, 0),    // Green
+        RGB(0, 0, 255),    // Blue
+        RGB(75, 0, 130),   // Indigo
+        RGB(148, 0, 211),  // Violet
+    };
+
+    const char* message = "Wow oh wow! The colour changes! It is rainbow and stuff";
+    for (size_t i = 0; message[i] != '\0'; i++) {
+        console_set_colour(colours[i % 7], CONSOLE_COLOUR_BLACK);
+        console_putchar(message[i]);
+    }
+    console_putchar('\n');
     
     KernelHang();
     KernelPanic("Kernel reached end of 'kernel_main' function.");
