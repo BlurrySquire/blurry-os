@@ -1,7 +1,7 @@
 #! /bin/bash
 
 TARGET=blurryos.hdd
-SIZE_MB=128
+SIZE_MB=256
 
 # Create an empty disk image
 dd if=/dev/zero bs=1M count=$SIZE_MB of=$TARGET
