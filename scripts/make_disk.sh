@@ -7,7 +7,7 @@ dd if=/dev/zero bs=1M count=$SIZE_MB of=$TARGET 2> /dev/null
 
 sgdisk $TARGET\
     -n 1:2048:+64M -t 1:ef00 -c 1:"EFI System" \
-    -n 2:0:0 -t 2:0700 -c 2:"MyOS Data" \
+    -n 2:0:0 -t 2:0700 -c 2:"BlurryOS Root" \
     > /dev/null
 
 # Figure out the offsets for each partition.
@@ -22,10 +22,13 @@ PART2_OFFSET=$(($PART2_SECTOR * $SECTOR_SIZE))
 
 ./limine/limine bios-install $TARGET > /dev/null
 
+# Boot partition
 mformat -F -i $TARGET@@$PART1_OFFSET
 mmd -i $TARGET@@$PART1_OFFSET ::/EFI ::/EFI/BOOT ::/boot ::/boot/limine
-mcopy -i $TARGET@@$PART1_OFFSET kernel/build/kernel.elf ::/boot
 mcopy -i $TARGET@@$PART1_OFFSET limine.conf limine/limine-bios.sys ::/boot/limine
 mcopy -i $TARGET@@$PART1_OFFSET limine/BOOTX64.EFI ::/EFI/BOOT
 
+# Root partition
 mformat -F -i $TARGET@@$PART2_OFFSET
+mmd -i $TARGET@@$PART2_OFFSET ::/system
+mcopy -i $TARGET@@$PART2_OFFSET kernel/build/kernel.elf ::/system
