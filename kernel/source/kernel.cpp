@@ -89,7 +89,8 @@ void kernel_main() {
         console_set_colour(colours[i % 7], CONSOLE_COLOUR_BLACK);
         console_putchar(message[i]);
     }
-    console_putchar('\n');
+    console_putstr("\n\n");
+    console_set_colour(CONSOLE_COLOUR_WHITE, CONSOLE_COLOUR_BLACK);
     
     KernelHang();
     KernelPanic("Kernel reached end of 'kernel_main' function.");

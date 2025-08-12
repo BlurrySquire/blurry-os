@@ -80,6 +80,8 @@ namespace Serial {
         char buffer[512];
         vsnprintf(buffer, sizeof(buffer), fmt, args);
 
+        va_end(args);
+
         Serial::PutStr(buffer);
     }
 }

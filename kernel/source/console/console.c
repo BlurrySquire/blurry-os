@@ -101,5 +101,7 @@ void console_printf(const char* fmt, ...) {
     char buffer[512];
     vsnprintf(buffer, sizeof(buffer), fmt, args);
 
+    va_end(args);
+
     console_putstr(buffer);
 }
