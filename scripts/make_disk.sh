@@ -4,12 +4,13 @@ TARGET=blurryos.hdd
 SIZE_MB=256
 
 # Create an empty disk image
-dd if=/dev/zero bs=1M count=$SIZE_MB of=$TARGET
+dd if=/dev/zero bs=1M count=$SIZE_MB of=$TARGET 2> /dev/null
 
 # Partition the disk
 sgdisk $TARGET\
     -n 1:2048:+64M -t 1:ef00 -c 1:"EFI System" \
-    -n 2:0:0 -t 2:0700 -c 2:"MyOS Data"
+    -n 2:0:0 -t 2:0700 -c 2:"MyOS Data" \
+    > /dev/null
 
 # Figure out the offsets for each partition
 SECTOR_SIZE=512
@@ -19,7 +20,7 @@ PART2_SECTOR=$(sgdisk -i 2 "$TARGET" | grep 'First sector' | awk '{print $3}')
 PART1_OFFSET=$(($PART1_SECTOR * $SECTOR_SIZE))
 PART2_OFFSET=$(($PART2_SECTOR * $SECTOR_SIZE))
 
-./limine/limine bios-install $TARGET
+./limine/limine bios-install $TARGET > /dev/null
 
 mformat -F -i $TARGET@@$PART1_OFFSET
 mmd -i $TARGET@@$PART1_OFFSET ::/EFI ::/EFI/BOOT ::/boot ::/boot/limine
