@@ -27,8 +27,7 @@ mformat -F -i $TARGET@@$PART1_OFFSET
 mmd -i $TARGET@@$PART1_OFFSET ::/EFI ::/EFI/BOOT ::/boot ::/boot/limine
 mcopy -i $TARGET@@$PART1_OFFSET limine.conf limine/limine-bios.sys ::/boot/limine
 mcopy -i $TARGET@@$PART1_OFFSET limine/BOOTX64.EFI ::/EFI/BOOT
+mcopy -i $TARGET@@$PART1_OFFSET kernel/build/kernel.elf ::
 
 # Root partition
 mformat -F -i $TARGET@@$PART2_OFFSET
-mmd -i $TARGET@@$PART2_OFFSET ::/system
-mcopy -i $TARGET@@$PART2_OFFSET kernel/build/kernel.elf ::/system
