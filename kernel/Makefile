@@ -52,15 +52,19 @@ clean:
 
 build/%.o: source/%.c
 	@mkdir -p $(dir $@)
-	$(GCC)	$(C_FLAGS) -std=c11 -c $< -o $@
+	@echo "    Compiling $<"
+	@$(GCC)	$(C_FLAGS) -std=c11 -c $< -o $@
 
 build/%.o: source/%.S
 	@mkdir -p $(dir $@)
-	$(AS) $(AS_FLAGS) -c $< -o $@
+	@echo "    Compiling $<"
+	@$(AS) $(AS_FLAGS) -c $< -o $@
 
 build/%.o: source/%.cpp
 	@mkdir -p $(dir $@)
-	$(G++) $(CPP_FLAGS) -c $< -o $@
+	@echo "    Compiling $<"
+	@$(G++) $(CPP_FLAGS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
-	$(LD) $(LD_FLAGS) $(OBJECTS) -o $@
+	@echo "Linking $(TARGET)"
+	@$(LD) $(LD_FLAGS) $(OBJECTS) -o $@
