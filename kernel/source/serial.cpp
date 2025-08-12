@@ -78,7 +78,7 @@ namespace Serial {
         va_start(args, fmt);
 
         char buffer[512];
-        vsnprintf(buffer, sizeof(buffer), fmt, args);
+        string_vnprintf(buffer, sizeof(buffer), fmt, args);
 
         va_end(args);
 

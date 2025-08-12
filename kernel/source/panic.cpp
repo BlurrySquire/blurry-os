@@ -9,7 +9,7 @@ void KernelPanic(const char* fmt, ...) {
     va_start(args, fmt);
 
     char buffer[512];
-    vsnprintf(buffer, sizeof(buffer), fmt, args);
+    string_vnprintf(buffer, sizeof(buffer), fmt, args);
 
     Serial::Print("PANIC: %s\n", buffer);
 }

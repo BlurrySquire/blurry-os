@@ -37,14 +37,7 @@ void strcpy(char *restrict dest, const char *restrict src) {
     dest[i] = '\0';
 }
 
-void snprintf(char* dest, size_t maxlen, const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-
-    vsnprintf(dest, maxlen, fmt, args);
-}
-
-void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
+void string_vnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
     char* p = (char*)fmt;
     size_t i = 0;
 
@@ -79,7 +72,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                 case 'd': {
                     int d = va_arg(args, int);
                     char buffer[21];
-                    strfmt_int(d, buffer);
+                    string_format_int(d, buffer);
 
                     int j = 0;
                     while (buffer[j]) {
@@ -92,7 +85,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                 case 'u': {
                     int u = va_arg(args, unsigned int);
                     char buffer[21];
-                    strfmt_uint(u, buffer);
+                    string_format_uint(u, buffer);
 
                     int j = 0;
                     while (buffer[j]) {
@@ -110,7 +103,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                         case 'i': {
                             int64_t ld = va_arg(args, long);
                             char buffer[21];
-                            strfmt_int(ld, buffer);
+                            string_format_int(ld, buffer);
                             
                             int j = 0;
                             while (buffer[j]) {
@@ -123,7 +116,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                         case 'u': {
                             uint64_t ld = va_arg(args, unsigned long);
                             char buffer[21];
-                            strfmt_uint(ld, buffer);
+                            string_format_uint(ld, buffer);
                             
                             int j = 0;
                             while (buffer[j]) {
@@ -136,7 +129,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                         case 'x': {
                             unsigned long lu = va_arg(args, unsigned long);
                             char buffer[17];
-                            strfmt_hex(lu, false, buffer);
+                            string_format_hex(lu, false, buffer);
 
                             int j = 0;
                             while (buffer[j]) {
@@ -149,7 +142,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                         case 'X': {
                             unsigned long lu = va_arg(args, unsigned long);
                             char buffer[17];
-                            strfmt_hex(lu, true, buffer);
+                            string_format_hex(lu, true, buffer);
 
                             int j = 0;
                             while (buffer[j]) {
@@ -170,7 +163,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                 case 'x': {
                     unsigned long u = va_arg(args, unsigned int);
                     char buffer[17];
-                    strfmt_hex(u, false, buffer);
+                    string_format_hex(u, false, buffer);
 
                     int j = 0;
                     while (buffer[j]) {
@@ -183,7 +176,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
                 case 'X': {
                     unsigned long u = va_arg(args, unsigned int);
                     char buffer[17];
-                    strfmt_hex(u, true, buffer);
+                    string_format_hex(u, true, buffer);
 
                     int j = 0;
                     while (buffer[j]) {
@@ -208,7 +201,7 @@ void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args) {
     dest[i] = '\0';
 }
 
-void strfmt_int(int64_t value, char buffer[21]) {
+void string_format_int(int64_t value, char buffer[21]) {
     char temp[21];
     bool negative = false;
     int i = 0;
@@ -240,7 +233,7 @@ void strfmt_int(int64_t value, char buffer[21]) {
     buffer[j] = '\0';
 }
 
-void strfmt_uint(uint64_t value, char buffer[21]) {
+void string_format_uint(uint64_t value, char buffer[21]) {
     char temp[21];
     int i = 0;
 
@@ -262,7 +255,7 @@ void strfmt_uint(uint64_t value, char buffer[21]) {
     buffer[j] = '\0';
 }
 
-void strfmt_hex(uint64_t value, bool uppercase, char buffer[17]) {
+void string_format_hex(uint64_t value, bool uppercase, char buffer[17]) {
     if (value == 0) {
         buffer[0] = '0';
         buffer[1] = '\0';

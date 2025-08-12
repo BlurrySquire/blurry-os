@@ -16,12 +16,15 @@ size_t strlen(const char* s);
 int strcmp(const char* s1, const char* s2);
 void strcpy(char* dest, const char* src);
 
-void strfmt_int(int64_t value, char buffer[21]);
-void strfmt_uint(uint64_t value, char buffer[21]);
-void strfmt_hex(uint64_t value, bool uppercase, char buffer[17]);
+size_t string_length(const char* str);
+int string_compare(const char* str1, const char* str2);
+void string_copy(char* dest, const char* src);
 
-void snprintf(char* dest, size_t maxlen, const char* fmt, ...);
-void vsnprintf(char* dest, size_t maxlen, const char* fmt, va_list args);
+void string_format_int(int64_t value, char buffer[21]);
+void string_format_uint(uint64_t value, char buffer[21]);
+void string_format_hex(uint64_t value, bool uppercase, char buffer[17]);
+
+void string_vnprintf(char* dest, size_t maxlen, const char* fmt, va_list args);
 
 #ifdef __cplusplus
 }
