@@ -3,6 +3,13 @@
 #include "types/def.h"
 
 __attribute__((used, section(".limine_requests")))
+volatile struct limine_executable_cmdline_request cmdline_request = {
+    .id = LIMINE_EXECUTABLE_CMDLINE_REQUEST,
+    .revision = 0,
+    .response = NULL
+};
+
+__attribute__((used, section(".limine_requests")))
 volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST,
     .revision = 0,

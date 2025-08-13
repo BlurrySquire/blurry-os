@@ -1,5 +1,6 @@
 #include "types/int.h"
 #include "types/def.h"
+#include "types/string.h"
 
 #include "limine.h"
 #include "limine_requests.h"
@@ -118,6 +119,14 @@ extern "C" {
 
         Serial::Init();
         Memory::InitPageAllocator();
+
+        // Should later on move before the Serial::Init();
+        // We need 2 serial init functions, once for
+        // normal output and then one for debugger output.
+        struct limine_executable_cmdline_response* cmdline = cmdline_request.response;
+        if (string_compare(cmdline->cmdline, "DEBUG_GDB") == 0) {
+            Serial::Print("Boot with debugging enabled.\n");
+        }
 
         /* Call all global constructors for C++ objects */
         uint64_t count = ((uint64_t)&_ctors_end - (uint64_t)&_ctors_end) / sizeof(void*);
