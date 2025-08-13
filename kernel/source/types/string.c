@@ -2,31 +2,31 @@
 
 #include "types/bool.h"
 
-size_t strlen(const char* s) {
+size_t string_length(const char* str) {
     size_t i = 0;
 
-    while (s[i] != '\0') {
+    while (str[i] != '\0') {
         i++;
     }
 
     return i;
 }
 
-int strcmp(const char *s1, const char *s2) {
+int string_compare(const char* str1, const char* str2) {
     size_t i = 0;
 
-    while (s1[i] == s2[i]) {
-        if (s1[i] == '\0' || s2[i] == '\0') {
+    while (str1[i] == str2[i]) {
+        if (str1[i] == '\0' || str2[i] == '\0') {
             return 0;
         }
 
         i++;
     }
 
-    return s1[i] - s2[i];
+    return str1[i] - str2[i];
 }
 
-void strcpy(char *restrict dest, const char *restrict src) {
+void string_copy(char* dest, const char* src) {
     size_t i = 0;
 
     while (src[i] != '\0') {

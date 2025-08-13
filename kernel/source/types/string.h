@@ -12,10 +12,6 @@ extern "C" {
 #include "types/int.h"
 #include "types/args.h"
 
-size_t strlen(const char* s);
-int strcmp(const char* s1, const char* s2);
-void strcpy(char* dest, const char* src);
-
 size_t string_length(const char* str);
 int string_compare(const char* str1, const char* str2);
 void string_copy(char* dest, const char* src);
