@@ -76,13 +76,13 @@ void kernel_main() {
 
     // I had to google the rainbow to double check the colours
     uint32_t colours[7] = {
-        RGB(255, 0, 0),    // Red
-        RGB(255, 127, 0),  // Orange
-        RGB(255, 255, 0),  // Yellow
-        RGB(0, 255, 0),    // Green
-        RGB(0, 0, 255),    // Blue
-        RGB(75, 0, 130),   // Indigo
-        RGB(148, 0, 211),  // Violet
+        CONSOLE_COLOUR_RGB(255, 0, 0),    // Red
+        CONSOLE_COLOUR_RGB(255, 127, 0),  // Orange
+        CONSOLE_COLOUR_RGB(255, 255, 0),  // Yellow
+        CONSOLE_COLOUR_RGB(0, 255, 0),    // Green
+        CONSOLE_COLOUR_RGB(0, 0, 255),    // Blue
+        CONSOLE_COLOUR_RGB(75, 0, 130),   // Indigo
+        CONSOLE_COLOUR_RGB(148, 0, 211),  // Violet
     };
 
     const char* message = "Wow oh wow! The colour changes! It is rainbow and stuff";

@@ -98,7 +98,7 @@ void console_printf(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    char buffer[512];
+    char buffer[CONSOLE_MAX_STRING_LEN];
     string_vnprintf(buffer, sizeof(buffer), fmt, args);
 
     va_end(args);
