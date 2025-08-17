@@ -6,10 +6,10 @@
 #include "limine_requests.h"
 
 #include "panic.hpp"
-#include "serial.hpp"
 
 #include "framebuffer.h"
 #include "console/console.h"
+#include "serial.h"
 
 #include "memory/page_allocator.hpp"
 
@@ -56,7 +56,7 @@ void kernel_main() {
         char vendor[13];
         hypervisor_get_vendor(vendor);
 
-        Serial::Print("Hypervisor present: %s\n", vendor);
+        serial_printf("Hypervisor present: %s\n", vendor);
     }
 
     framebuffer_init();
@@ -64,7 +64,7 @@ void kernel_main() {
     console_clear();
 
     console_printf("Hello, kernel!\n");
-    Serial::Print("Hello, serial!\n");
+    serial_printf("Hello, serial!\n");
 
     // I had to google the rainbow to double check the colours
     uint8_t colours[7][3] = {
@@ -110,7 +110,7 @@ extern "C" {
 
         LoadGDT();
 
-        Serial::Init();
+        serial_init();
         Memory::InitPageAllocator();
 
         // Should later on move before the Serial::Init();

@@ -12,6 +12,8 @@ extern "C" {
 #include "std/int.h"
 #include "std/args.h"
 
+#define STRING_DEFAULT_MAX_LEN 512
+
 size_t string_length(const char* str);
 int string_compare(const char* str1, const char* str2);
 void string_copy(char* dest, const char* src);
