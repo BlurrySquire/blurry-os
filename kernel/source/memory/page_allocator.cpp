@@ -3,7 +3,7 @@
 #include "limine.h"
 #include "limine_requests.h"
 
-#include "types/int.h"
+#include "std/int.h"
 
 #include "serial.hpp"
 

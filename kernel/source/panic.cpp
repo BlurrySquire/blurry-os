@@ -1,6 +1,6 @@
 #include "panic.hpp"
 
-#include "types/string.h"
+#include "std/string.h"
 
 #include "serial.hpp"
 

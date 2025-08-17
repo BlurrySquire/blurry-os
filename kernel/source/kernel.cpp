@@ -1,6 +1,6 @@
-#include "types/int.h"
-#include "types/def.h"
-#include "types/string.h"
+#include "std/int.h"
+#include "std/def.h"
+#include "std/string.h"
 
 #include "limine.h"
 #include "limine_requests.h"

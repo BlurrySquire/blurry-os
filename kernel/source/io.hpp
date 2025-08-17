@@ -1,7 +1,7 @@
 #ifndef _HPP_IO
 #define _HPP_IO
 
-#include "types/int.h"
+#include "std/int.h"
 
 namespace IO {
     void Write8(uint16_t port, uint8_t value);

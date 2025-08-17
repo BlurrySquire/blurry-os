@@ -6,11 +6,11 @@ extern "C" {
 #endif
 
 #ifndef __cplusplus
-#include "types/bool.h"
+#include "std/bool.h"
 #endif
 
-#include "types/int.h"
-#include "types/args.h"
+#include "std/int.h"
+#include "std/args.h"
 
 size_t string_length(const char* str);
 int string_compare(const char* str1, const char* str2);

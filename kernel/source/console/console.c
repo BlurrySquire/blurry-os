@@ -2,9 +2,9 @@
 
 #include "font8x8_basic.h"
 
-#include "types/string.h"
-#include "types/args.h"
-#include "types/def.h"
+#include "std/string.h"
+#include "std/args.h"
+#include "std/def.h"
 
 /* Internal variables use a '_' prefix. */
 struct limine_framebuffer* _framebuffer = NULL;
