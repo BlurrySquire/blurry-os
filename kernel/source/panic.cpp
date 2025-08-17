@@ -2,7 +2,7 @@
 
 #include "std/string.h"
 
-#include "serial.hpp"
+#include "serial.h"
 
 void KernelPanic(const char* fmt, ...) {
     va_list args;
@@ -11,7 +11,7 @@ void KernelPanic(const char* fmt, ...) {
     char buffer[512];
     string_vnprintf(buffer, sizeof(buffer), fmt, args);
 
-    Serial::Print("PANIC: %s\n", buffer);
+    serial_printf("PANIC: %s\n", buffer);
 }
 
 [[noreturn]] void KernelHang() {

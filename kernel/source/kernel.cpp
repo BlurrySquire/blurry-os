@@ -118,7 +118,7 @@ extern "C" {
         // normal output and then one for debugger output.
         struct limine_executable_cmdline_response* cmdline = cmdline_request.response;
         if (string_compare(cmdline->cmdline, "DEBUG_GDB") == 0) {
-            Serial::Print("Boot with debugging enabled.\n");
+            serial_printf("Boot with debugging enabled.\n");
         }
 
         /* Call all global constructors for C++ objects */

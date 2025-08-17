@@ -5,8 +5,6 @@
 
 #include "std/int.h"
 
-#include "serial.hpp"
-
 uint64_t _total_pages = 0;
 uint64_t _bitmap_size = 0;
 uintptr_t _bitmap_addr = 0;
