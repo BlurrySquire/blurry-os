@@ -5,28 +5,29 @@
 extern "C" {
 #endif
 
-#include "std/int.h"
+#ifndef __cplusplus
+#include "std/bool.h"
+#endif
 
-#include "limine.h"
+#include "std/int.h"
 
 #define CONSOLE_MAX_STRING_LEN 512
 
-#define CONSOLE_COLOUR_RGB(r, g, b) (uint32_t)((((r) & 0xFF) << 16) | (((g) & 0xFF) << 8) | (((b) & 0xFF) << 0))
+#define CONSOLE_COLOUR_BLACK   0x10, 0x10, 0x10
+#define CONSOLE_COLOUR_RED     0xC0, 0x00, 0x00
+#define CONSOLE_COLOUR_GREEN   0x00, 0xAF, 0x00
+#define CONSOLE_COLOUR_YELLOW  0xE1, 0xA9, 0x00
+#define CONSOLE_COLOUR_BLUE    0x0F, 0x28, 0xFF
+#define CONSOLE_COLOUR_MAGENTA 0xCC, 0x00, 0xCC
+#define CONSOLE_COLOUR_CYAN    0x00, 0xAF, 0xAF
+#define CONSOLE_COLOUR_WHITE   0xC3, 0xC3, 0xC3
 
-#define CONSOLE_COLOUR_BLACK   CONSOLE_COLOUR_RGB(0x10, 0x10, 0x10)
-#define CONSOLE_COLOUR_RED     CONSOLE_COLOUR_RGB(0xC0, 0x00, 0x00)
-#define CONSOLE_COLOUR_GREEN   CONSOLE_COLOUR_RGB(0x00, 0xAF, 0x00)
-#define CONSOLE_COLOUR_YELLOW  CONSOLE_COLOUR_RGB(0xE1, 0xA9, 0x00)
-#define CONSOLE_COLOUR_BLUE    CONSOLE_COLOUR_RGB(0x0F, 0x28, 0xFF)
-#define CONSOLE_COLOUR_MAGENTA CONSOLE_COLOUR_RGB(0xCC, 0x00, 0xCC)
-#define CONSOLE_COLOUR_CYAN    CONSOLE_COLOUR_RGB(0x00, 0xAF, 0xAF)
-#define CONSOLE_COLOUR_WHITE   CONSOLE_COLOUR_RGB(0xC3, 0xC3, 0xC3)
-
-void console_set_framebuffer(struct limine_framebuffer* framebuffer);
-
-void console_set_colour(uint32_t foreground, uint32_t background);
+bool console_init();
 
 void console_clear();
+
+void console_set_foreground(uint8_t r, uint8_t g, uint8_t b);
+void console_set_background(uint8_t r, uint8_t g, uint8_t b);
 
 void console_putchar(const char character);
 void console_putstr(const char* string);

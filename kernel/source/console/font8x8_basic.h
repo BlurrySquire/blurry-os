@@ -18,6 +18,8 @@
  * Fetched from: http://dimensionalrift.homelinux.net/combuster/mos3/?p=viewsource&file=/modules/gfx/font8_8.asm
  **/
 
+#define FONT8X8_CHAR_SIZE 8
+
 // Constant: font8x8_basic
 // Contains an 8x8 font map for unicode points U+0000 - U+007F (basic latin)
 const char font8x8_basic[128][8] = {
