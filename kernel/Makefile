@@ -53,7 +53,7 @@ clean:
 build/%.o: source/%.c
 	@mkdir -p $(dir $@)
 	@echo "    Compiling $<"
-	@$(GCC)	$(C_FLAGS) -std=c11 -c $< -o $@
+	@$(GCC)	$(C_FLAGS) -std=gnu11 -c $< -o $@
 
 build/%.o: source/%.S
 	@mkdir -p $(dir $@)
