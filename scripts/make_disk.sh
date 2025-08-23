@@ -1,6 +1,6 @@
 #! /bin/bash
 
-TARGET=blurryos.hdd
+TARGET=blurryos.img
 SIZE_MB=256
 
 dd if=/dev/zero bs=1M count=$SIZE_MB of=$TARGET 2> /dev/null

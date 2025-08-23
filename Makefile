@@ -1,4 +1,4 @@
-TARGET := blurryos.hdd
+TARGET := blurryos.img
 TARGET_DEPS := \
 	limine \
 	limine.conf \
