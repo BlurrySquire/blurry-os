@@ -4,11 +4,10 @@
 #include "limine.h"
 #include "limine_requests.h"
 
-#include "panic.hpp"
-
 #include "framebuffer.h"
 #include "console/console.h"
 #include "serial.h"
+#include "panic.h"
 
 #include "memory/page_allocator.h"
 
@@ -48,7 +47,7 @@ void kernel_main() {
             revision. It is probably best to just hang
             or shutdown.
         */
-        KernelPanic("Limine requested base revision unsuported.");
+        kernel_panic("Limine requested base revision unsuported.");
     }
 
     if (hypervisor_is_present()) {
@@ -108,8 +107,8 @@ void kernel_main() {
     console_putstr("\n\n");
     console_set_foreground(CONSOLE_COLOUR_WHITE);
     
-    KernelHang();
-    KernelPanic("Kernel reached end of 'kernel_main' function.");
+    kernel_hang();
+    kernel_panic("Kernel reached end of 'kernel_main' function.");
 }
 
 extern "C" {

@@ -1,20 +1,20 @@
-#include "panic.hpp"
+#include "panic.h"
 
 #include "std/string.h"
 
 #include "serial.h"
 
-void KernelPanic(const char* fmt, ...) {
+void kernel_panic(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    char buffer[512];
+    char buffer[STRING_DEFAULT_MAX_LEN];
     string_vnprintf(buffer, sizeof(buffer), fmt, args);
 
-    serial_printf("PANIC: %s\n", buffer);
+    serial_printf("PANIC: %s\r\n", buffer);
 }
 
-[[noreturn]] void KernelHang() {
+void kernel_hang() {
     while (true) {
         asm volatile (
             "hlt"
