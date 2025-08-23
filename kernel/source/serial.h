@@ -5,9 +5,7 @@
 extern "C" {
 #endif
 
-#ifndef __cplusplus
-#include "std/bool.h"
-#endif
+#include "std/types.h"
 
 bool serial_init();
 

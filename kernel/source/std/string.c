@@ -1,7 +1,5 @@
 #include "string.h"
 
-#include "std/bool.h"
-
 size_t string_length(const char* str) {
     size_t i = 0;
 

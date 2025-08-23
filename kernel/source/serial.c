@@ -1,7 +1,7 @@
 #include "serial.h"
 
-#include "std/args.h"
 #include "std/string.h"
+#include "std/va_args.h"
 
 #include "io.h"
 

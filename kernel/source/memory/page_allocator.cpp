@@ -3,7 +3,7 @@
 #include "limine.h"
 #include "limine_requests.h"
 
-#include "std/int.h"
+#include "std/types.h"
 
 uint64_t _total_pages = 0;
 uint64_t _bitmap_size = 0;

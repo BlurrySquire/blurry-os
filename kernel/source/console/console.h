@@ -5,11 +5,7 @@
 extern "C" {
 #endif
 
-#ifndef __cplusplus
-#include "std/bool.h"
-#endif
-
-#include "std/int.h"
+#include "std/types.h"
 
 #define CONSOLE_MAX_STRING_LEN 512
 

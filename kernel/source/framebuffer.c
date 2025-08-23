@@ -1,7 +1,5 @@
 #include "framebuffer.h"
 
-#include "std/def.h"
-
 #include "limine_requests.h"
 
 bool _fb_init = false;

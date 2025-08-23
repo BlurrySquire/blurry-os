@@ -5,11 +5,7 @@
 extern "C" {
 #endif
 
-#ifndef __cplusplus
-#include "std/bool.h"
-#endif
-
-#include "std/int.h"
+#include "std/types.h"
 
 bool framebuffer_init();
 

@@ -21,7 +21,7 @@
 extern "C" {
 #endif
 
-#include "std/int.h"
+#include "std/types.h"
 
 /* Misc */
 

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "std/int.h"
+#include "std/types.h"
 
 void io_write8(uint16_t port, uint8_t value);
 void io_write16(uint16_t port, uint16_t value);

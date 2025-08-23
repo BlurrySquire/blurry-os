@@ -1,5 +1,4 @@
-#include "std/int.h"
-#include "std/def.h"
+#include "std/types.h"
 #include "std/string.h"
 
 #include "limine.h"

@@ -1,7 +1,7 @@
 #ifndef _HPP_MEMORY_MEMORY
 #define _HPP_MEMORY_MEMORY
 
-#include "std/int.h"
+#include "std/types.h"
 
 namespace Memory {
     void* memcpy(void* dest, const void* src, size_t n);

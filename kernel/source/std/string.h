@@ -5,12 +5,8 @@
 extern "C" {
 #endif
 
-#ifndef __cplusplus
-#include "std/bool.h"
-#endif
-
-#include "std/int.h"
-#include "std/args.h"
+#include "std/types.h"
+#include "std/va_args.h"
 
 #define STRING_DEFAULT_MAX_LEN 512
 

@@ -1,7 +1,5 @@
 #include "limine_requests.h"
 
-#include "std/def.h"
-
 __attribute__((used, section(".limine_requests")))
 volatile struct limine_executable_cmdline_request cmdline_request = {
     .id = LIMINE_EXECUTABLE_CMDLINE_REQUEST,

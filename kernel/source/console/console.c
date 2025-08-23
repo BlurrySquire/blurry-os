@@ -1,8 +1,7 @@
 #include "console.h"
 
 #include "std/string.h"
-#include "std/args.h"
-#include "std/def.h"
+#include "std/va_args.h"
 
 #include "font8x8_basic.h"
 #include "framebuffer.h"
