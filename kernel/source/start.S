@@ -9,7 +9,7 @@ stack_top:
 
 _start:
     leaq stack_top(%rip), %rsp
-    call kernel_start
+    call kernel_main
     jmp _loop
 
 _loop:
