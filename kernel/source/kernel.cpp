@@ -10,7 +10,7 @@
 #include "console/console.h"
 #include "serial.h"
 
-#include "memory/page_allocator.hpp"
+#include "memory/page_allocator.h"
 
 __attribute__((used, section(".limine_requests")))
 static volatile LIMINE_BASE_REVISION(3);
@@ -57,6 +57,29 @@ void kernel_main() {
 
         serial_printf("Hypervisor present: %s\n", vendor);
     }
+
+    void* address1 = page_alloc(1);
+    serial_printf("Allocated 1 page(s): 0x%x\n\n", (uintptr_t)address1);
+
+    void* address2 = page_alloc(1);
+    serial_printf("Allocated 1 page(s): 0x%x\n\n", (uintptr_t)address2);
+
+    void* address3 = page_alloc(3);
+    serial_printf("Allocated 2 page(s): 0x%x\n\n", (uintptr_t)address3);
+
+    page_free(address1, 1);
+    serial_printf("Freed 1 page(s): 0x%x\n\n", (uintptr_t)address1);
+
+    page_free(address2, 1);
+    serial_printf("Freed 1 page(s): 0x%x\n\n", (uintptr_t)address2);
+
+    void* address4 = page_alloc(2);
+    serial_printf("Allocated 2 page(s): 0x%x\n\n", (uintptr_t)address4);
+
+    page_free(address4, 2);
+
+    void* address5 = page_alloc(3);
+    serial_printf("Allocated 3 page(s): 0x%x\n\n", (uintptr_t)address5);
 
     framebuffer_init();
     console_init();
@@ -110,7 +133,7 @@ extern "C" {
         LoadGDT();
 
         serial_init();
-        Memory::InitPageAllocator();
+        page_allocator_init();
 
         // Should later on move before the Serial::Init();
         // We need 2 serial init functions, once for
