@@ -1,0 +1,3 @@
+The following are expceptions from the GPL-3.0 license:
+
+Any software that makes use of the syscalls provided by the Blurry OS kernel are NOT considered to be a derived work and DO NOT have to be licensed under the same GPL-3.0 license, or be open source at all.
