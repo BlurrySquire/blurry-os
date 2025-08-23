@@ -12,10 +12,10 @@ gdtr:
     .quad gdt
 
 .section .text
-.global LoadGDT
-.type LoadGDT, @function
+.global gdt_load
+.type gdt_load, @function
 
-LoadGDT:
+gdt_load:
     lgdt gdtr
 
     mov $0x10, %rax

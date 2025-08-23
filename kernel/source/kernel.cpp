@@ -118,7 +118,7 @@ extern "C" {
     constructor _ctors_end[0];
 
     /* From source/gdt.S */
-    extern void LoadGDT(void);
+    extern void gdt_load(void);
 
     __attribute__((noreturn))
     void kernel_start(void) {
@@ -130,7 +130,7 @@ extern "C" {
             }
         }
 
-        LoadGDT();
+        gdt_load();
 
         serial_init();
         page_allocator_init();
