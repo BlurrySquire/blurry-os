@@ -1,5 +1,5 @@
-Blurry OS is licensed under GPL-3.0 INCLUDING exceptions from LICENSE-EXCEPTIONS
+Blurry OS is licensed under GPL-3.0 INCLUDING exceptions from ./GPL-EXCEPTIONS
 
-A copy of the GPL-3.0 license is found in GPL-LICENSE
+A copy of the GPL-3.0 license is found in ./GPL
 
-The GPL-3.0 license requires you to include the license of the project when distributing it. In this case it means this LICENSE file, GPL-LICENSE and LICENSE-EXCEPTIONS
+The GPL-3.0 license requires you to include the license of the project when distributing it. In this case it means this ./LICENSE file, ./GPL and ./GPL-EXCEPTIONS.
