@@ -19,13 +19,13 @@ C_FLAGS := \
 	-mno-sse2 \
 	-mno-red-zone \
 	-mcmodel=kernel \
+	-MMD \
+	-MP \
 	-Isource
 
 CPP_FLAGS := \
 	$(C_FLAGS) \
 	-DLIMINE_API_REVISION=3 \
-	-MMD \
-	-MP
 
 AS_FLAGS := \
 	$(C_FLAGS)
@@ -43,7 +43,9 @@ TARGET := build/kernel.elf
 C_SOURCES   := $(wildcard source/*.c) $(wildcard source/*/*.c)
 AS_SOURCES  := $(wildcard source/*.S) $(wildcard source/*/*.S)
 CPP_SOURCES := $(wildcard source/*.cpp) $(wildcard source/*/*.cpp)
-OBJECTS	  := $(C_SOURCES:source/%.c=build/%.o) $(AS_SOURCES:source/%.S=build/%.o) $(CPP_SOURCES:source/%.cpp=build/%.o)
+
+OBJECTS	     := $(C_SOURCES:source/%.c=build/%.o) $(AS_SOURCES:source/%.S=build/%.o) $(CPP_SOURCES:source/%.cpp=build/%.o)
+DEPENDENCIES := $(C_SOURCES:source/%.c=build/%.d) $(CPP_SOURCES:source/%.cpp=build/%.d)
 
 all: $(TARGET)
 
@@ -68,3 +70,5 @@ build/%.o: source/%.cpp
 $(TARGET): $(OBJECTS)
 	@echo "Linking $(TARGET)"
 	@$(LD) $(LD_FLAGS) $(OBJECTS) -o $@
+
+-include $(DEPENDENCIES)
