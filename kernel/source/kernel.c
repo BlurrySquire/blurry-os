@@ -9,6 +9,8 @@
 #include "serial.h"
 #include "panic.h"
 
+#include "idt.h"
+
 #include "memory/page_allocator.h"
 
 /* From kernel/source/gdt.S */
@@ -27,6 +29,7 @@ void kernel_main() {
     }
 
     gdt_load();
+    idt_load();
 
     struct limine_executable_cmdline_response* cmdline = cmdline_request.response;
     if (string_compare(cmdline->cmdline, "DEBUG_GDB") == 0) {
